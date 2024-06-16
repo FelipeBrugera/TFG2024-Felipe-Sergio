@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PadelNosMatao</title>
+    <link href="../estilos/style.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-verde">
+    <header class="header">
+        <nav>     
+            <input type="checkbox" id="toggle">
+            <div class="logoA">
+                <a href="../index.php"><img src="../img/logo.jpg" alt="Logo"></a>
+            </div>
+            
+            <ul class="list">
+            <li><a href="../layouts/sorteo.html">Sorteco sencillo</a></li>
+                <li><a href="../../sensor.html">¿Cómo esta la pista?</a></li>
+                <li><a href="https://worldpadeltour.com/noticias">Sigue el WPT</a></li>
+                <li><a href="https://linktr.ee/marcoserg">Apple gratis</a></li>
+                <form method="post" action="../index.php">
+                    <li><button class="btnLlegar" type="submit" name="orden" value="usuario">Usuario</button></li>
+                </form>
+            </ul>
+
+            <label for="toggle" class="icon-bars">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </label>
+            
+    </nav>
+
+    </header>
+    <div class="content">
+        <div class="Manual">
+            <label>Nombre de jugador/ID: </label>
+            <input type="text" id="jugador">
+                <legend>Elige posición: </legend>
+                <div>
+                <input type="radio" id="derecha" value="Derecha" name="posicion"/>
+                <label>Derecha</label>
+                </div>
+                <div>
+                <input type="radio" id="reves" value="Reves" name="posicion"/>
+                <label>Reves</label>
+                </div>
+                <div>
+                <input type="radio" id="indiferente" value="Indiferente" name="posicion"/>
+                <label>Indiferente</label>
+                </div>
+            <input type="button" value="Añadir jugador"  class="botoncp" onclick="RegistarJugadores()">
+            <input type="button" value="Empezar Sorteo" class="botoncp" onclick="start()">
+            <div class="contadores">
+                <p id="contador"></p>
+                <p id="contadorD"></p>
+                <p id="contadorR"></p>
+                <p id="contadorI"></p>
+                <p id="jugadoresD"></p>
+                <p id="jugadoresR"></p>
+                <p id="jugadoresI"></p>
+            </div> 
+        </div>
+        <div class="Automatico">
+            <p>Introduzca la lista para hacer el sorteo.</p>
+            <p>La lista debe tener el siguiente formato: </p>
+            <p>1.Nombre-Posición(R/D/I)</p>
+            <textarea id="lista" cols="30" rows="10"></textarea>
+            <input type="button" value="Empezar sorteo" class="botoncp" onclick="RegistarJugadoresAutomatico()">
+        </div>
+    </div>
+</div>
+ 
+<table border="1" id="pista" class="pista"></table>
+
+  <footer>
+    <img src="../img/logo.jpg" alt="" class="logo">
+    <div class="social-icons-container">
+        <a href="#" class="social-icon"></a>
+        <a href="#" class="social-icon"></a>
+        <a href="#" class="social-icon"></a>
+    </div>
+    <ul class="footer-menu-container">
+      <li class="menu-item">Contacto: 612345678</li>
+      <li class="menu-item">Email: info@padelnosmatao.com</li>
+      <li class="menu-item">Alcalá de henares</li>
+    </ul>
+
+  </footer>
+      <script>
+        var JDerecha = [];
+        var JReves = [];
+        var JIndiferente=[];
+        var JTotales = [];
+        var checkJugadores=false; //Si cambia a true significa que falta algún jugador
+        const table = document.getElementById("pista");
+        const contenedorD = document.getElementById("jugadoresD");
+        const contenedorR = document.getElementById("jugadoresR");
+        const contenedorI = document.getElementById("jugadoresI");
+        const Pcontador = document.getElementById("contador");
+        const PcontadorD = document.getElementById("contadorD");
+        const PcontadorR = document.getElementById("contadorR");
+        const PcontadorI = document.getElementById("contadorI");
+        var ContJD=0;var contJR=0;var Pcont=0;var PcontD=0;var PcontR=0;var PcontI=0;
+
+        function RegistarJugadores(){
+            if(document.getElementsByName("posicion")[0].checked){
+                JDerecha.unshift(document.getElementById("jugador").value);
+                PcontD++;
+            }
+            else if(document.getElementsByName("posicion")[1].checked){
+                JReves.unshift(document.getElementById("jugador").value);
+                PcontR++;
+            }
+            else{
+                JIndiferente.unshift(document.getElementById("jugador").value);
+                PcontI++;
+            }
+            Pcont++;
+            Pcontador.textContent="Jugadores añadidos: "+Pcont;
+            PcontadorD.textContent="Jugadores derecha: "+PcontD;
+            PcontadorR.textContent="Jugadores reves: "+PcontR;
+            PcontadorI.textContent="Jugadores indiferentes: "+PcontI;
+            console.log("D: "+JDerecha+"R: "+JReves+" I: "+JIndiferente);
+        }
+
+        function RegistarJugadoresAutomatico(){
+            const listaElement = document.getElementById("lista");
+            const contenido = listaElement.value;
+            const lineas = contenido.split('\n');
+            for(i=0;i<lineas.length;i++){
+                const elementos = lineas[i].split(/[.-]/);
+                var nombreAuto=elementos[1]; //coge el segundo elemento
+                var posicionAuto=elementos[2];
+                if(posicionAuto=="d"||posicionAuto==" d"||posicionAuto=="d "||posicionAuto==" d "||posicionAuto=="D"||posicionAuto==" D"||posicionAuto=="D "||posicionAuto==" D "){
+                    JDerecha.unshift(nombreAuto);
+                    PcontD++;
+                }
+                else if(posicionAuto=="r"||posicionAuto==" r"||posicionAuto=="r "||posicionAuto==" r "||posicionAuto=="R"||posicionAuto==" R"||posicionAuto=="R "||posicionAuto==" R "){
+                    JReves.unshift(nombreAuto);
+                    PcontR++;
+                }
+                else{
+                    JIndiferente.unshift(nombreAuto);
+                    PcontI++;
+                }
+            }
+            console.log("D: "+JDerecha+"R: "+JReves+" I: "+JIndiferente);
+            var JTD = new JugadoresTotal(JDerecha);
+            var JTR = new JugadoresTotal(JReves);
+            var JTI = new JugadoresTotal(JIndiferente);
+            console.log(JTotales);
+            JTI.PozoCompleto();
+            //Cuenta todos los jugadores del Array derecha
+             JDerecha.forEach(indice=> {
+                ContJD++;
+            });
+            JReves.forEach(indice=> {
+                contJR++;
+            });
+
+            if(ContJD>contJR+JIndiferente.length){
+                    alert("No puede haber más jugadores de derecha que en el resto de posiciones. Introduzca los jugadores de nuevo.");
+                    MostrarJugadores();
+                    JDerecha=[];JReves=[];JIndiferente=[];JTotales=[];ContJD=0;contJR=0;
+                }
+                else if(contJR>ContJD+JIndiferente.length){
+                    alert("No puede haber más jugadores de reves que en el resto de posiciones. Introduzca los jugadores de nuevo.");
+                    MostrarJugadores();
+                    JDerecha=[];JReves=[];JIndiferente=[];JTotales=[];ContJD=0;contJR=0;
+                }
+                else{
+                    if(checkJugadores==false){
+                        if(JIndiferente.length!=0){
+                        CompletarIndiferentes();}
+                    ColocarJugadores();
+                    }
+                    else{
+                        JTotales=[];
+                    }
+                }
+            
+        }
+
+        class JugadoresTotal{
+            constructor(players){
+                for(let i in players){
+                    JTotales.unshift(i);
+                }
+            }
+            PozoCompleto(){
+                
+                if(JTotales.length%4!= 0){
+                alert("Faltan jugadores!! Hay un total de "+JTotales.length+" jugadores");
+                alert("Introduzca los jugadores de nuevo.")
+                location.reload();
+                checkJugadores=true;
+                }
+            }
+        }
+        function CompletarIndiferentes(){
+                var NumJugadoresLado=JTotales.length/2;              
+                //Añade los jugadores Indiferentes a la derecha hasta que se completen todos los jugadores de derecha
+                while(JDerecha.length<NumJugadoresLado){
+                    JDerecha.unshift(JIndiferente[0]);
+                    JIndiferente.shift(0);
+                    if(JIndiferente.length==0){
+                        break;
+                    }
+                    console.log("Jugadores por lado: "+NumJugadoresLado+"   "+JIndiferente); 
+                }
+               /* do{
+                    JDerecha.unshift(JIndiferente[0]);
+                    JIndiferente.shift(0);
+                    console.log("Jugadores por lado: "+NumJugadoresLado+"   "+JIndiferente); 
+                }while(JDerecha.length!=NumJugadoresLado||JIndiferente.length==0);//falla este bucle cuando es 1 pista, probar con for*/
+                //Lo mismo con los jugadores de Reves
+                do{
+                    JReves.unshift(JIndiferente[0]);
+                    JIndiferente.shift(0);
+                    console.log(JIndiferente); 
+                    if(JIndiferente.length==0){
+                        break;
+                    }
+                }while(JReves.length!=NumJugadoresLado);
+                console.log(JDerecha+" : "+JReves);   
+            }
+        
+        function ColocarJugadores(){
+            var Pistas=JTotales.length/4;
+            var ale= Math.random() * Pistas;
+            var ale_int= parseInt(ale);
+            //let currentIndex = 0;
+            var contPistas=1;
+            const JDerechaClon = [...JDerecha]; // Clona el array original para no alterarlo
+            const shuffledArray = [];
+            const JRevesClon = [...JReves]; // Clona el array original para no alterarlo
+            const shuffledArray2 = [];
+
+                while (JDerechaClon.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * JDerechaClon.length);
+                    const randomItem = JDerechaClon.splice(randomIndex, 1)[0]; // Extrae el elemento aleatorio
+                    shuffledArray.push(randomItem); // Agrega el elemento al nuevo array
+                }
+                while (JRevesClon.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * JRevesClon.length);
+                    const randomItem = JRevesClon.splice(randomIndex, 1)[0]; // Extrae el elemento aleatorio
+                    shuffledArray2.push(randomItem); // Agrega el elemento al nuevo array
+                }
+
+
+        for (let i = 0; i < JDerecha.length; i++) {
+                const row = table.insertRow();
+                const cell1 = row.insertCell(0);         
+                cell1.textContent = "Pista: "+contPistas;
+
+                
+
+                if (i % 2 != 0) {
+                //cell1.setAttribute("rowspan", "2");
+                contPistas++;
+            }
+
+               // const row = table.insertRow();
+                const cell2 = row.insertCell(1);
+                cell2.textContent = shuffledArray[i];
+
+                if (i < JReves.length) {
+                    const cell3 = row.insertCell(2);
+                    cell3.textContent = shuffledArray2[i];
+                   
+                }
+
+                
+           // }
+           /* if (currentIndex == 1) {
+                // Crear una nueva tabla después de llenar las celdas
+                table = document.createElement('table');
+                table.border = '1';
+                document.appendChild(table);
+            }//cambiar stilo css colores cada 2 celdas*/
+
+        }}
+        function MostrarJugadores(){
+            contenedorD.textContent="";
+            JDerecha.forEach(elemento => {
+            const parrafo = document.createElement("p"); // Crea un nuevo elemento de párrafo
+            parrafo.textContent = "Jugador de Derecha: "+elemento; // Establece el texto del párrafo como el elemento actual del array
+            contenedorD.appendChild(parrafo); // Agrega el párrafo al contenedor
+            });
+            contenedorR.textContent="";
+            JReves.forEach(elemento2 => {
+            const parrafo2 = document.createElement("p");
+            parrafo2.textContent = "Jugador de Reves: "+elemento2;
+            contenedorR.appendChild(parrafo2);
+            });
+            contenedorI.textContent="";
+            JIndiferente.forEach(elemento3 => {
+            const parrafo3 = document.createElement("p");
+            parrafo3.textContent = "Jugador Indiferentes: "+elemento3;
+            contenedorI.appendChild(parrafo3);
+            });
+        }
+    
+        function start(){
+            var JTD = new JugadoresTotal(JDerecha);
+            var JTR = new JugadoresTotal(JReves);
+            var JTI = new JugadoresTotal(JIndiferente);
+            console.log(JTotales);
+            JTI.PozoCompleto();
+            //Cuenta todos los jugadores del Array derecha
+             JDerecha.forEach(indice=> {
+                ContJD++;
+            });
+            JReves.forEach(indice=> {
+                contJR++;
+            });
+
+            if(ContJD>contJR+JIndiferente.length){
+                    alert("No puede haber más jugadores de derecha que en el resto de posiciones. Introduzca los jugadores de nuevo.");
+                    MostrarJugadores();
+                    JDerecha=[];JReves=[];JIndiferente=[];JTotales=[];ContJD=0;contJR=0;
+                }
+                else if(contJR>ContJD+JIndiferente.length){
+                    alert("No puede haber más jugadores de reves que en el resto de posiciones. Introduzca los jugadores de nuevo.");
+                    MostrarJugadores();
+                    JDerecha=[];JReves=[];JIndiferente=[];JTotales=[];ContJD=0;contJR=0;
+                }
+                else{
+                    if(checkJugadores==false){
+                        if(JIndiferente.length!=0){
+                        CompletarIndiferentes();}
+                    ColocarJugadores();
+                    }
+                    else{
+                        JTotales=[];
+                    }
+                }
+            Pcont=0;PcontD=0;PcontR=0;PcontI=0;
+            Pcontador.textContent="Para añadir nuevos jugadores o solucionar cualquier error actualice la página";
+            PcontadorD.textContent="";
+            PcontadorR.textContent="";
+            PcontadorI.textContent="";
+        }
+      </script>
+    
+</body>
+</html>

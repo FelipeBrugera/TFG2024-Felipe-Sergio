@@ -1,0 +1,16 @@
+{
+  "name": "lecturayservidor",
+  "version": "1.0.0",
+  "main": "ServidorHtml.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "mqtt": "^5.7.0",
+    "ws": "^8.17.0"
+  }
+}

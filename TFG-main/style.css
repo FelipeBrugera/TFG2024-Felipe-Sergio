@@ -1,0 +1,94 @@
+p,
+label {
+font:
+    1rem 'Fira Sans',
+    sans-serif;
+    margin: auto;
+    text-align: center;
+}
+input {
+margin: 0.4rem;
+}
+fieldset{
+    width: 30%;
+}
+/* Cambia el color de fondo de cada dos filas de la tabla */
+tr:nth-child(2n-1) {
+background-color: #c8f8c5; 
+}
+tr:nth-child(2n) {
+background-color: #c8f8c5   ; 
+}
+tr:nth-child(4n-1) {
+background-color: #0cf708;
+}
+tr:nth-child(4n) {
+background-color: #0cf708;
+}
+table {
+    border-collapse: collapse;
+    width: 400px;
+    height: 200px;
+    margin: 20px auto;
+    float: left;
+}
+
+tr {
+    height: 25px;
+    border: 3px solid white;
+}
+body {
+    margin: auto;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #166650;
+}
+ .cabecera{
+    width: 100%;
+    background: #004531;
+    color: white;
+    height: 80px;
+ }
+ #logo-cabecera{
+    float: left;
+    padding: 8px 0 0 20px;
+    height: 80%;
+ }
+ .logo-apple{
+    width: 100px;
+    margin: auto;
+    background-color: #166650;
+ }
+ #texto-cabecera{
+    text-align: center;
+ }
+ .cuerpo{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+ }
+
+.Manual, .Automatico{
+width: 40%;
+padding: 5px;
+float: left;
+margin-left: 50px;
+}
+#lista{
+    margin-top: 10x;
+}
+.contadores{
+    font-size: 16px; /* Tamaño de fuente */
+    line-height: 1.3; /* Espacio entre líneas */
+    margin-top: 10px; /* Margen exterior */
+    padding: 0; /* Relleno interior */
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    height: 100px;
+    display: block;
+    margin: auto;
+}

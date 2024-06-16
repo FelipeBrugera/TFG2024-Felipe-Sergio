@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PadelNosMatao</title>
+    <link href="default.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id="container" style="width: 450px;">
+        <div id="header">
+            <img src="../img/logo.jpg" alt="PadelNosMatao" width="100px" height="100px">
+        <h1>Registro</h1>
+        </div>
+        
+        <div id="content">
+            <table>
+                <tr>
+                <td>Nombre:</td><td> <input type="text" name="nombre" value=""></td></tr>
+                <tr>
+                <td>Apellidos:</td><td> <input type="text" name="Apellidos" value=""></td></tr>
+                <tr>
+                    <td>Apodo:</td><td> <input type="text" name="apodo" value=""></td></tr>
+                <tr>
+                <td>Contraseña: </td>
+                <td><input type="text" name="contraseña" value=""></td>
+                </tr>
+                <form  method="POST" enctype="multipart/form-data" action="http://localhost/pozo/img_usuarios">
+                    <td>Seleccione una foto de perfil: </td>
+                    <td><input type="file" name="image"></td>
+                    </tr>
+                    <!--<input type="submit" value="Subir archivo">-->
+                   </form>
+            </table>
+            <input type="button" value="Registrarse">
+        </div>
+        </div>
+</body>
+</html>

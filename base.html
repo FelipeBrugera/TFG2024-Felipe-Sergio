@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos del Sensor</title>
+    <style>
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .mac-cell:hover::before {
+            content: attr(data-mac);
+            color: red;
+        }
+        .mac-cell::before {
+            content: 'Pista';
+        }
+    </style>
+</head>
+<body>
+    <h1>Datos del Sensor</h1>
+    <table id="sensorData">
+        <tr>
+            <th>Pista</th>
+            <th>Temperatura</th>
+            <th>Humedad</th>
+        </tr>
+        <tr>
+            <td class="mac-cell" data-mac="00:00:00:00:00:00"> </td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+    </table>
+    <script>
+        // Función para agregar una fila de datos a la tabla
+        function addData(macId, temperature, humidity) {
+            var table = document.getElementById("sensorData");
+            var row = table.insertRow();
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            cell1.className = 'mac-cell';
+            cell1.setAttribute('data-mac', macId);
+            cell2.innerHTML = temperature;
+            cell3.innerHTML = humidity;
+        }
+
+        // Función para actualizar los datos recibidos del servidor
+        function updateData(data) {
+            clearTable();  // Limpiar la tabla antes de agregar nuevos datos
+            var sensorData = JSON.parse(data);
+            var macId = sensorData.mac_Id;
+            var temperature = sensorData.Temperatura;
+            var humidity = sensorData.Humedad;
+            addData(macId, temperature, humidity);
+        }
+
+        // Función para limpiar la tabla
+        function clearTable() {
+            var table = document.getElementById("sensorData");
+            var rowCount = table.rows.length;
+
+            // Mantener la primera fila (encabezado) y eliminar el resto
+            for (var i = rowCount - 1; i > 0; i--) {
+                table.deleteRow(i);
+            }
+        }
+
+        // Conectar con el servidor para recibir actualizaciones
+        var ws = new WebSocket("ws://localhost:8080"); // Asegúrate de que el servidor intermedio está en ejecución
+
+        ws.onmessage = function(event) {
+            updateData(event.data);
+        };
+    </script>
+</body>
+</html>
